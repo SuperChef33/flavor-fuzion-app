@@ -459,8 +459,7 @@ export default function MenuApp() {
       {/* Nav */}
       <nav style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(254,250,244,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid #EEE8DF", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, letterSpacing: "0.04em" }}>Flavor Fuzion</div>
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#B5A48C", letterSpacing: "0.1em", marginTop: "1px" }}>BY HEATHER JANEY</div>
+          <img src="https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/noBgColor.png" alt="Flavor Fuzion by Heather Janey" style={{ height: "48px", width: "auto", display: "block", objectFit: "contain" }} />
         </div>
         <button onClick={() => { setShowCart(true); setView("cart"); }} style={{ background: "#1A1208", color: "#FEFAF4", border: "none", borderRadius: "100px", padding: "10px 20px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
           <span>🛒</span><span>Order</span>
@@ -544,6 +543,10 @@ export default function MenuApp() {
         <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "28px", fontWeight: 300, marginBottom: "8px" }}>Planning a large event?</div>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#B5A48C", marginBottom: "20px" }}>Get in touch for custom menus, tastings, and deposit-based bookings.</p>
         <button onClick={() => { setShowCart(true); setView("form"); }} style={{ background: "#E76F51", color: "#fff", border: "none", borderRadius: "100px", padding: "12px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, cursor: "pointer", letterSpacing: "0.04em" }}>Contact Us →</button>
+        <div style={{ marginTop: "28px", display: "flex", justifyContent: "center", gap: "28px", flexWrap: "wrap" }}>
+          <a href="https://instagram.com/flavorfuzionbyhj" target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#B5A48C", textDecoration: "none" }}>📸 @flavorfuzionbyhj</a>
+          <a href="tel:7742053071" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#B5A48C", textDecoration: "none" }}>📞 774-205-3071</a>
+        </div>
       </div>
 
       {/* Cart Overlay */}
