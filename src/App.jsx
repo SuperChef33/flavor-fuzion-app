@@ -35,7 +35,7 @@ const tagColors = {
   "Vegetarian Option": "#52B788", "GF Option": "#52B788",
 };
 
-const CATEGORIES = ["All", "Meal Prep", "Catering", "Private Dinners", "🍱 Combos"];
+const CATEGORIES = ["All", "Meal Prep", "Catering", "Private Dinners", "🍪 Cookies", "🍱 Combos"];
 
 function getImage(item) { return item.image_url || PLACEHOLDERS[item.name] || FALLBACK; }
 
@@ -407,9 +407,10 @@ export default function MenuApp() {
   };
 
   const isCombosTab = activeCategory === "🍱 Combos";
+  const categoryKey = activeCategory.replace(/^\p{Emoji}\s*/u, "").trim();
   const filtered = isCombosTab ? [] : (activeCategory === "All"
     ? menuItems.filter((i) => i.category !== "Sides")
-    : menuItems.filter((i) => i.category === activeCategory));
+    : menuItems.filter((i) => i.category === categoryKey));
 
   const addToCart = (item) => {
     setCartItems((prev) => {
