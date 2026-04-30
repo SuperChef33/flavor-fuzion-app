@@ -470,7 +470,7 @@ export default function MenuApp() {
       {/* Hero */}
       <div style={{ padding: "72px 32px 56px", maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
         <div className="section-label" style={{ marginBottom: "16px" }}>Food is Life, Life is Good</div>
-        <h1 className="hero-title" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "72px", fontWeight: 300, lineHeight: 1.05, letterSpacing: "-0.01em", marginBottom: "20px" }}>
+        <h1 className="hero-title" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "72px", fontWeight: 300, lineHeight: 1.05, letterSpacing: "-0.01em", marginBottom: "20px", color: "#1A1208" }}>
           Bold flavors,<br /><em>made with love</em>
         </h1>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "16px", color: "#6B5E4E", lineHeight: 1.7, maxWidth: "520px", margin: "0 auto" }}>
@@ -513,7 +513,7 @@ export default function MenuApp() {
                     </div>
                     <div style={{ padding: "20px 20px 18px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
-                        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px" }}>{item.name}</h2>
+                        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px", color: "#1A1208" }}>{item.name}</h2>
                         <div style={{ textAlign: "right", flexShrink: 0 }}>
                           <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "26px", fontWeight: 600 }}>${item.price}</div>
                           <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#B5A48C" }}>{item.unit}</div>
