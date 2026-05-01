@@ -468,11 +468,11 @@ export default function MenuApp() {
       `}</style>
 
       {/* Nav */}
-      <nav style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(254,250,244,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid #EEE8DF", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <nav style={{ position: "sticky", top: 0, zIndex: 50, background: "linear-gradient(135deg, #0F1A0F 0%, #4A1B6B 100%)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(201,168,76,0.2)", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
           <img src="https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/noBgColor.png" alt="Flavor Fuzion by Heather Janey" style={{ height: "48px", width: "auto", display: "block", objectFit: "contain" }} />
         </div>
-        <button onClick={() => { setShowCart(true); setView("cart"); }} style={{ background: "#1A1208", color: "#FEFAF4", border: "none", borderRadius: "100px", padding: "10px 20px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
+        <button onClick={() => { setShowCart(true); setView("cart"); }} style={{ background: "linear-gradient(135deg, #8B6914 0%, #DAA520 30%, #F5D060 50%, #DAA520 70%, #8B6914 100%)", color: "#0F1A0F", border: "none", borderRadius: "100px", padding: "10px 20px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
           <span>🛒</span><span>Order</span>
           {totalItems > 0 && <span style={{ background: "#E76F51", color: "#fff", borderRadius: "100px", padding: "2px 8px", fontSize: "11px" }}>{totalItems}</span>}
         </button>
