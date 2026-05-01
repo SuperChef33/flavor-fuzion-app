@@ -385,6 +385,7 @@ export default function MenuApp() {
   const [loading, setLoading]           = useState(true);
   const [error, setError]               = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedCookie, setSelectedCookie] = useState("");
   const [cartItems, setCartItems]       = useState([]);
   const [comboItems, setComboItems]     = useState([]);
   const [showCart, setShowCart]         = useState(false);
@@ -513,11 +514,8 @@ export default function MenuApp() {
                 <div style={{ marginBottom: "20px" }}>
                   <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#B5A48C", display: "block", marginBottom: "8px" }}>Select Pack Size</label>
                   <select
-                    onChange={(e) => {
-                      const selected = filtered.find(i => i.id === e.target.value);
-                      if (selected) addToCart(selected);
-                    }}
-                    defaultValue=""
+                    value={selectedCookie}
+                    onChange={(e) => setSelectedCookie(e.target.value)}
                     style={{ width: "100%", padding: "12px 14px", border: "1.5px solid #D4C9B8", borderRadius: "10px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", background: "#FEFAF4", outline: "none", cursor: "pointer" }}>
                     <option value="" disabled>Choose a pack size...</option>
                     {filtered.map((item) => (
@@ -527,8 +525,18 @@ export default function MenuApp() {
                     ))}
                   </select>
                 </div>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C", textAlign: "center" }}>
-                  💡 Bigger packs = better savings! Select a size and it'll be added to your order.
+                <button
+                  disabled={!selectedCookie}
+                  onClick={() => {
+                    const selected = filtered.find(i => i.id === selectedCookie);
+                    if (selected) { addToCart(selected); setSelectedCookie(""); }
+                  }}
+                  className="add-btn"
+                  style={{ width: "100%", opacity: selectedCookie ? 1 : 0.4, cursor: selectedCookie ? "pointer" : "not-allowed" }}>
+                  + Add to Order
+                </button>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C", textAlign: "center", marginTop: "12px" }}>
+                  💡 Bigger packs = better savings!
                 </p>
               </div>
             )}
