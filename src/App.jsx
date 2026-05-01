@@ -503,7 +503,36 @@ export default function MenuApp() {
             {loading && <div style={{ textAlign: "center", paddingTop: "60px" }}><div className="spinner" /><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#B5A48C", fontSize: "14px" }}>Loading the menu…</div></div>}
             {error && <div style={{ textAlign: "center", paddingTop: "60px" }}><div style={{ fontSize: "48px", marginBottom: "16px" }}>😔</div><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#E76F51", fontSize: "15px", marginBottom: "16px" }}>{error}</div><button className="add-btn" onClick={fetchMenu}>Try Again</button></div>}
             {!loading && !error && filtered.length === 0 && <div style={{ textAlign: "center", paddingTop: "60px" }}><div style={{ fontSize: "48px", marginBottom: "16px" }}>🍽️</div><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#B5A48C", fontSize: "15px" }}>No items in this category right now.<br />Check back soon!</div></div>}
-            {!loading && !error && filtered.length > 0 && (
+            {!loading && !error && filtered.length > 0 && categoryKey === "Cookies" && (
+              <div style={{ maxWidth: "500px", margin: "0 auto", background: "#fff", borderRadius: "20px", padding: "32px", border: "1px solid #EEE8DF", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
+                <div style={{ textAlign: "center", marginBottom: "24px" }}>
+                  <div style={{ fontSize: "64px", marginBottom: "12px" }}>🍪</div>
+                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "28px", fontWeight: 600, color: "#1A1208", marginBottom: "8px" }}>Almond Lavender Cookies</h2>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#6B5E4E", lineHeight: 1.6 }}>Organic & Gluten-Free. Made with love by Chef Heather Janey.</p>
+                </div>
+                <div style={{ marginBottom: "20px" }}>
+                  <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#B5A48C", display: "block", marginBottom: "8px" }}>Select Pack Size</label>
+                  <select
+                    onChange={(e) => {
+                      const selected = filtered.find(i => i.id === e.target.value);
+                      if (selected) addToCart(selected);
+                    }}
+                    defaultValue=""
+                    style={{ width: "100%", padding: "12px 14px", border: "1.5px solid #D4C9B8", borderRadius: "10px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", background: "#FEFAF4", outline: "none", cursor: "pointer" }}>
+                    <option value="" disabled>Choose a pack size...</option>
+                    {filtered.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name.replace("Almond Lavender Cookies - ", "")} — ${item.price}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C", textAlign: "center" }}>
+                  💡 Bigger packs = better savings! Select a size and it'll be added to your order.
+                </p>
+              </div>
+            )}
+            {!loading && !error && filtered.length > 0 && categoryKey !== "Cookies" && (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "28px" }}>
                 {filtered.map((item) => (
                   <div key={item.id} className="menu-card">
