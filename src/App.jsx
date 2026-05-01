@@ -17,9 +17,9 @@ const PLACEHOLDERS = {
   "Turkey Meatballs":        "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&q=80",
   "Shrimp Stir Fry":         "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&q=80",
   "Chicken Tikka Masala":    "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80",
-  "Beef & Broccoli":         "https://images.pexels.com/photos/2347311/pexels-photo-2347311.jpeg?auto=compress&cs=tinysrgb&w=600",
-  "Seafood Boil Experience": "https://images.pexels.com/photos/16997923/pexels-photo-16997923/free-photo-of-lobsters-and-crabs-on-plate.jpeg?auto=compress&cs=tinysrgb&w=600",
-  "Mediterranean Mezze":     "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600",
+  "Beef & Broccoli":         "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80",
+  "Seafood Boil Experience": "https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=600&q=80",
+  "Mediterranean Mezze":     "https://images.unsplash.com/photo-1541014741259-de529411b96a?w=600&q=80",
   "Southern Comfort Spread": "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=600&q=80",
   "Asian Fusion Banquet":    "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80",
   "Holiday Feast Package":   "https://images.unsplash.com/photo-1576402187878-974f70c890a5?w=600&q=80",
@@ -269,6 +269,7 @@ function OrderForm({ cartItems, comboItems, onSuccess, onCancel }) {
     customer_name: "", customer_email: "", customer_phone: "",
     event_date: "", event_time: "",
     guest_count: "", entree_count: "", appetizer_count: "", side_count: "",
+    gluten_free: false, organic: false,
     dietary_notes: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -364,6 +365,27 @@ function OrderForm({ cartItems, comboItems, onSuccess, onCancel }) {
 
 
       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", fontWeight: 600, margin: "24px 0 16px", paddingBottom: "8px", borderBottom: "1px solid #EEE8DF" }}>Dietary Notes & Allergies</div>
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", fontWeight: 600, margin: "24px 0 16px", paddingBottom: "8px", borderBottom: "1px solid #EEE8DF" }}>Dietary Preferences</div>
+      <div style={{ background: "#FEFAF0", borderRadius: "12px", padding: "16px", marginBottom: "16px", border: "1px solid #EEE8DF" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "12px", cursor: "pointer" }}>
+            <input type="checkbox" checked={form.gluten_free || false} onChange={(e) => set("gluten_free", e.target.checked)}
+              style={{ width: "18px", height: "18px", accentColor: "#1A1208", cursor: "pointer" }} />
+            <div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "#1A1208" }}>🌾 Gluten-Free</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>May increase price depending on ingredients required</div>
+            </div>
+          </label>
+          <label style={{ display: "flex", alignItems: "center", gap: "12px", cursor: "pointer" }}>
+            <input type="checkbox" checked={form.organic || false} onChange={(e) => set("organic", e.target.checked)}
+              style={{ width: "18px", height: "18px", accentColor: "#1A1208", cursor: "pointer" }} />
+            <div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "#1A1208" }}>🌿 Organic Ingredients</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>Organic sourcing may increase the final price</div>
+            </div>
+          </label>
+        </div>
+      </div>
       <Field label="Any allergies or dietary restrictions?"><textarea style={{ ...inputStyle, height: "100px", resize: "vertical" }} placeholder="e.g. 3 guests are gluten-free, 1 is allergic to shellfish…" value={form.dietary_notes} onChange={(e) => set("dietary_notes", e.target.value)} onFocus={(e) => e.target.style.borderColor="#1A1208"} onBlur={(e) => e.target.style.borderColor="#D4C9B8"} /></Field>
 
       {errors.submit && <div style={{ background: "#FEF0ED", border: "1px solid #E76F51", borderRadius: "10px", padding: "12px 16px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#E76F51", marginBottom: "16px" }}>{errors.submit}</div>}
@@ -372,7 +394,7 @@ function OrderForm({ cartItems, comboItems, onSuccess, onCancel }) {
       <div style={{ background: "#FEFAF0", borderRadius: "12px", padding: "16px", marginTop: "16px", marginBottom: "8px", border: "1px solid #EEE8DF" }}>
         <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#B5A48C", marginBottom: "8px" }}>💡 Pricing Info</div>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#6B5E4E", lineHeight: 1.7, margin: "0 0 8px 0" }}>
-          Prices shown cover all food and ingredients. <strong>In-home services</strong> (Private Dinners, Catering & Dinner Parties) include a chef service fee of <strong>$65/hr</strong> (3-hr minimum) in your final quote. Meal prep has no service fee. Substitutions & custom requests may affect the final price.
+          Prices shown cover all food and ingredients. <strong>In-home services</strong> (Private Dinners, Catering & Dinner Parties) include a chef service fee of <strong>$45/hr</strong> (3-hr minimum) in your final quote. Meal prep has no service fee. Substitutions & custom requests may affect the final price.
         </p>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#6B5E4E", lineHeight: 1.7, margin: 0 }}>
           🚗 <strong>Delivery:</strong> Within 10 miles $10 · 10–35 miles $18 · <strong>Free on meal prep orders over $150!</strong>
