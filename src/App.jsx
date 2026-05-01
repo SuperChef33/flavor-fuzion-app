@@ -15,7 +15,7 @@ const PLACEHOLDERS = {
   "Mediterranean Chicken":   "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&q=80",
   "Teriyaki Salmon":         "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80",
   "Turkey Meatballs":        "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&q=80",
-  "Shrimp Stir Fry":         "https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=600&q=80",
+  "Shrimp Stir Fry":         "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&q=80",
   "Chicken Tikka Masala":    "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80",
   "Beef & Broccoli":         "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&q=80",
   "Seafood Boil Experience": "https://images.unsplash.com/photo-1565680018434-b7b4a1e6c5f3?w=600&q=80",
