@@ -424,8 +424,9 @@ export default function MenuApp() {
 
   const isCombosTab = activeCategory === "🍱 Combos";
   const categoryKey = activeCategory.replace(/^\p{Emoji}\s*/u, "").trim();
+  const CATEGORY_ORDER = ["Meal Prep", "Catering", "Private Dinners", "Cookies"];
   const filtered = isCombosTab ? [] : (activeCategory === "All"
-    ? menuItems.filter((i) => i.category !== "Sides")
+    ? menuItems.filter((i) => i.category !== "Sides").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
     : menuItems.filter((i) => i.category === categoryKey));
 
   const addToCart = (item) => {
