@@ -25,6 +25,16 @@ const PLACEHOLDERS = {
   "Mac & Cheese":            "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=600&q=80",
   "Roasted Sweet Potatoes":  "https://images.unsplash.com/photo-1596797038530-2c107aa9a5e0?w=600&q=80",
   "Garden Side Salad":       "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80",
+  "Almond Lavender Cookies - 6 Pack":  "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 12 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 18 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 24 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 30 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 36 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 42 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 48 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 54 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
+  "Almond Lavender Cookies - 60 Pack": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg",
 };
 const FALLBACK = "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&q=80";
 
