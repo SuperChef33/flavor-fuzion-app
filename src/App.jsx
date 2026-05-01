@@ -12,7 +12,7 @@ const COMBO_TIERS = [
 
 const PLACEHOLDERS = {
   "Herb-Crusted Salmon Bowl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80",
-  "Mediterranean Chicken":   "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80",
+  "Mediterranean Chicken":   "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&q=80",
   "Vegan Lentil Curry":      "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80",
   "BBQ Feast Package":       "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=80",
   "Elegant Brunch Spread":   "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=600&q=80",
