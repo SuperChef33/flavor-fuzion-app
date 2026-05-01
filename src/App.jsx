@@ -368,6 +368,17 @@ function OrderForm({ cartItems, comboItems, onSuccess, onCancel }) {
 
       {errors.submit && <div style={{ background: "#FEF0ED", border: "1px solid #E76F51", borderRadius: "10px", padding: "12px 16px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#E76F51", marginBottom: "16px" }}>{errors.submit}</div>}
 
+      {/* Pricing Transparency Notice */}
+      <div style={{ background: "#FEFAF0", borderRadius: "12px", padding: "16px", marginTop: "16px", marginBottom: "8px", border: "1px solid #EEE8DF" }}>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#B5A48C", marginBottom: "8px" }}>💡 Pricing Info</div>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#6B5E4E", lineHeight: 1.7, margin: "0 0 8px 0" }}>
+          Prices shown cover all food and ingredients. <strong>In-home services</strong> (Private Dinners, Catering & Dinner Parties) include a chef service fee of <strong>$65/hr</strong> (3-hr minimum) in your final quote. Meal prep has no service fee. Substitutions & custom requests may affect the final price.
+        </p>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#6B5E4E", lineHeight: 1.7, margin: 0 }}>
+          🚗 <strong>Delivery:</strong> Within 10 miles $10 · 10–35 miles $18 · <strong>Free on meal prep orders over $150!</strong>
+        </p>
+      </div>
+
       <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
         <button onClick={onCancel} style={{ flex: 1, padding: "14px", border: "1.5px solid #D4C9B8", borderRadius: "12px", background: "transparent", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, color: "#6B5E4E", cursor: "pointer" }}>← Back</button>
         <button onClick={submit} disabled={submitting} style={{ flex: 2, padding: "14px", border: "none", borderRadius: "12px", background: submitting ? "#B5A48C" : "#1A1208", color: "#FEFAF4", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, cursor: submitting ? "not-allowed" : "pointer", letterSpacing: "0.03em", transition: "background 0.2s" }}>
