@@ -420,9 +420,73 @@ function SuccessScreen({ name, onReset }) {
       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "28px", fontWeight: 600, marginBottom: "12px" }}>Thank you, {name}!</div>
       <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.7, marginBottom: "32px" }}>
         Your order request has been sent to Heather.<br />She'll be in touch soon to confirm all the details.<br /><br />
-        <em style={{ color: "#B5A48C" }}>Food is Life, Life is Good 🍽️</em>
+        <em style={{ color: "#B5A48C" }}>Food is Life. Life is Good.™ 🍽️</em>
       </div>
       <button onClick={onReset} style={{ background: "#1A1208", color: "#FEFAF4", border: "none", borderRadius: "12px", padding: "14px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, cursor: "pointer" }}>Back to Menu</button>
+    </div>
+  );
+}
+
+// ── Privacy Policy Modal ──────────────────────────────────────────────────────
+function PrivacyPolicy({ onClose }) {
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(26,18,8,0.6)", zIndex: 200, overflowY: "auto", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "40px 16px" }}>
+      <div style={{ background: "#FEFAF4", borderRadius: "20px", maxWidth: "720px", width: "100%", padding: "48px 40px", position: "relative", boxShadow: "0 24px 80px rgba(26,18,8,0.2)" }}>
+        <button onClick={onClose} style={{ position: "absolute", top: "20px", right: "20px", background: "none", border: "none", fontSize: "22px", cursor: "pointer", color: "#6B5E4E" }}>✕</button>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#B5A48C", marginBottom: "12px" }}>Legal</div>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "36px", fontWeight: 600, color: "#1A1208", marginBottom: "8px" }}>Privacy Policy</h1>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C", marginBottom: "32px" }}>Effective Date: May 1, 2025 · Last Updated: May 1, 2025</p>
+        {[
+          { title: "1. Who We Are", body: "Flavor Fuzion by Heather Janey ("we," "us," or "our") is a sole proprietorship operating in Massachusetts, transitioning to an LLC. We operate the Flavor Fuzion ordering platform at flavorfuzion.com." },
+          { title: "2. Information We Collect", body: "We collect information you provide directly when placing an order or inquiry, including: your name, email address, phone number, event date, guest count, dietary notes, and order details. We do not collect payment information directly — all payment processing is handled by secure third-party processors." },
+          { title: "3. How We Use Your Information", body: "We use the information you provide to: respond to your order requests, communicate with you about your event, improve our services, and comply with legal obligations. We do not sell, rent, or share your personal information with third parties for marketing purposes." },
+          { title: "4. Data Storage", body: "Your order information is stored securely using Supabase, a third-party database service. Data is stored on servers located in the United States. We retain your information only as long as necessary to fulfill your order and comply with applicable law." },
+          { title: "5. Cookies", body: "Our website may use cookies or similar technologies to improve your browsing experience. You can disable cookies in your browser settings, though some features of the site may not function properly as a result." },
+          { title: "6. Your Rights (Massachusetts Residents)", body: "Under Massachusetts law, you have the right to request access to, correction of, or deletion of your personal information. To exercise these rights, please contact us at the email below." },
+          { title: "7. Children's Privacy", body: "Our services are not directed to children under the age of 13. We do not knowingly collect personal information from children." },
+          { title: "8. Changes to This Policy", body: "We may update this Privacy Policy from time to time. We will notify you of significant changes by updating the effective date at the top of this page." },
+          { title: "9. Contact Us", body: "If you have questions about this Privacy Policy, please contact us at: FlavorFuzionbHJ@Outlook.com" },
+        ].map(({ title, body }) => (
+          <div key={title} style={{ marginBottom: "24px" }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "20px", fontWeight: 600, color: "#1A1208", marginBottom: "8px" }}>{title}</h2>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.75 }}>{body}</p>
+          </div>
+        ))}
+        <button onClick={onClose} style={{ background: "#1A1208", color: "#FEFAF4", border: "none", borderRadius: "100px", padding: "12px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, cursor: "pointer", marginTop: "8px" }}>Close</button>
+      </div>
+    </div>
+  );
+}
+
+// ── Terms of Service Modal ────────────────────────────────────────────────────
+function TermsOfService({ onClose }) {
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(26,18,8,0.6)", zIndex: 200, overflowY: "auto", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "40px 16px" }}>
+      <div style={{ background: "#FEFAF4", borderRadius: "20px", maxWidth: "720px", width: "100%", padding: "48px 40px", position: "relative", boxShadow: "0 24px 80px rgba(26,18,8,0.2)" }}>
+        <button onClick={onClose} style={{ position: "absolute", top: "20px", right: "20px", background: "none", border: "none", fontSize: "22px", cursor: "pointer", color: "#6B5E4E" }}>✕</button>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#B5A48C", marginBottom: "12px" }}>Legal</div>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "36px", fontWeight: 600, color: "#1A1208", marginBottom: "8px" }}>Terms of Service</h1>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C", marginBottom: "32px" }}>Effective Date: May 1, 2025 · Last Updated: May 1, 2025</p>
+        {[
+          { title: "1. Acceptance of Terms", body: "By accessing or using the Flavor Fuzion ordering platform, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services." },
+          { title: "2. Services Provided", body: "Flavor Fuzion by Heather Janey provides personal chef services including weekly meal preparation, catering, private dinners, and baked goods. All orders are subject to availability and confirmation by Heather Janey." },
+          { title: "3. Order Requests & Confirmation", body: "Submitting an order through our platform constitutes a request only — not a confirmed booking. Orders become confirmed only after Heather Janey contacts you to review details, confirm pricing, and arrange payment. No payment is collected at the time of submission." },
+          { title: "4. Pricing", body: "Prices shown on the menu cover food and ingredient costs. Private dinners, catering, and in-home services include a chef service fee of $45/hr (3-hour minimum), which will be included in your confirmed quote. Delivery fees apply based on distance. Custom requests and substitutions may affect the final price." },
+          { title: "5. Cancellations & Deposits", body: "Cancellation and deposit policies will be communicated during booking confirmation. For large events or catering bookings, a deposit may be required to secure your date. Deposits are generally non-refundable within 48 hours of the event." },
+          { title: "6. Dietary & Allergen Responsibility", body: "While we make every effort to accommodate dietary needs and allergies disclosed at the time of ordering, Flavor Fuzion cannot guarantee a completely allergen-free environment. Customers must disclose all known allergies and dietary restrictions at the time of ordering. Flavor Fuzion is not liable for reactions resulting from undisclosed allergens." },
+          { title: "7. Intellectual Property", body: 'The phrase "Food is Life. Life is Good.™" is a trademark of Flavor Fuzion by Heather Janey. All content on this platform, including menus, images, and branding, is the property of Flavor Fuzion by Heather Janey and may not be used without written permission.' },
+          { title: "8. Limitation of Liability", body: "To the fullest extent permitted by Massachusetts law, Flavor Fuzion by Heather Janey shall not be liable for any indirect, incidental, or consequential damages arising from use of our services." },
+          { title: "9. Governing Law", body: "These Terms of Service are governed by the laws of the Commonwealth of Massachusetts. Any disputes shall be resolved in the courts of Massachusetts." },
+          { title: "10. Changes to These Terms", body: "We reserve the right to update these Terms at any time. Continued use of our platform after changes constitutes acceptance of the updated Terms." },
+          { title: "11. Contact Us", body: "If you have questions about these Terms, please contact us at: FlavorFuzionbHJ@Outlook.com" },
+        ].map(({ title, body }) => (
+          <div key={title} style={{ marginBottom: "24px" }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "20px", fontWeight: 600, color: "#1A1208", marginBottom: "8px" }}>{title}</h2>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.75 }}>{body}</p>
+          </div>
+        ))}
+        <button onClick={onClose} style={{ background: "#1A1208", color: "#FEFAF4", border: "none", borderRadius: "100px", padding: "12px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, cursor: "pointer", marginTop: "8px" }}>Close</button>
+      </div>
     </div>
   );
 }
@@ -439,6 +503,8 @@ export default function MenuApp() {
   const [showCart, setShowCart]         = useState(false);
   const [view, setView]                 = useState("cart");
   const [successName, setSuccessName]   = useState("");
+  const [showPrivacy, setShowPrivacy]   = useState(false);
+  const [showTerms, setShowTerms]       = useState(false);
 
   useEffect(() => { fetchMenu(); }, []);
 
@@ -457,10 +523,12 @@ export default function MenuApp() {
 
   const isCombosTab = activeCategory === "🍱 Combos";
   const categoryKey = activeCategory.replace(/^\p{Emoji}\s*/u, "").trim();
-  const CATEGORY_ORDER = ["Meal Prep", "Catering", "Private Dinners", "Cookies"];
+  const CATEGORY_ORDER = ["Meal Prep", "Sides", "Catering", "Private Dinners", "Cookies"];
   const filtered = isCombosTab ? [] : (activeCategory === "All"
-    ? menuItems.filter((i) => i.category !== "Sides").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
-    : menuItems.filter((i) => i.category === categoryKey));
+    ? menuItems.sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
+    : activeCategory === "Meal Prep"
+      ? menuItems.filter((i) => i.category === "Meal Prep" || i.category === "Sides").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
+      : menuItems.filter((i) => i.category === categoryKey));
 
   const addToCart = (item) => {
     setCartItems((prev) => {
@@ -519,7 +587,7 @@ export default function MenuApp() {
 
       {/* Hero */}
       <div style={{ padding: "72px 32px 56px", maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
-        <div className="section-label" style={{ marginBottom: "16px" }}>Food is Life, Life is Good</div>
+        <div className="section-label" style={{ marginBottom: "16px" }}>Food is Life. Life is Good.™</div>
         <h1 className="hero-title" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "72px", fontWeight: 300, lineHeight: 1.05, letterSpacing: "-0.01em", marginBottom: "20px", color: "#1A1208" }}>
           Bold flavors,<br /><em>made with love</em>
         </h1>
@@ -633,6 +701,11 @@ export default function MenuApp() {
           <a href="https://instagram.com/flavorfuzionbyhj" target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#B5A48C", textDecoration: "none" }}>📸 @flavorfuzionbyhj</a>
           <a href="tel:7742053071" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#B5A48C", textDecoration: "none" }}>📞 774-205-3071</a>
         </div>
+        <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "24px", flexWrap: "wrap", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+          <button onClick={() => setShowPrivacy(true)} style={{ background: "none", border: "none", fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#6B5E4E", cursor: "pointer", textDecoration: "underline", padding: 0 }}>Privacy Policy</button>
+          <button onClick={() => setShowTerms(true)} style={{ background: "none", border: "none", fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#6B5E4E", cursor: "pointer", textDecoration: "underline", padding: 0 }}>Terms of Service</button>
+        </div>
+        <div style={{ marginTop: "16px", fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#4A3D30" }}>© {new Date().getFullYear()} Flavor Fuzion by Heather Janey. All rights reserved. "Food is Life. Life is Good.™"</div>
       </div>
 
       {/* Cart Overlay */}
@@ -709,6 +782,10 @@ export default function MenuApp() {
         {view === "form" && <OrderForm cartItems={cartItems} comboItems={comboItems} onSuccess={handleSuccess} onCancel={() => setView("cart")} />}
         {view === "success" && <SuccessScreen name={successName} onReset={handleReset} />}
       </div>
+
+      {/* Privacy Policy & Terms of Service Modals */}
+      {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
+      {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
     </div>
   );
 }
