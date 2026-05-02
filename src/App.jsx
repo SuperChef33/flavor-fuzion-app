@@ -24,6 +24,7 @@ const PLACEHOLDERS = {
   "Asian Fusion Banquet":    "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80",
   "Holiday Feast Package":   "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/IMG-20260501-WA0017.jpg",
   "Vegan Lentil Curry":      "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80",
+  "Silken Tofu Simple Stir Fry": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_114235232.png",
   "BBQ Feast Package":       "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=80",
   "Elegant Brunch Spread":   "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=600&q=80",
   "Taco & Tequila Bar":      "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80",
