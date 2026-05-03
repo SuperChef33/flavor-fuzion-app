@@ -14,8 +14,9 @@ const PLACEHOLDERS = {
   "Herb-Crusted Salmon Bowl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80",
   "Mediterranean Chicken":   "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/IMG-20260501-WA0021.jpg",
   "Teriyaki Salmon":         "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80",
-  "Turkey Meatballs":        "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_125551213.png",
-  "Not Your Mama's Turkey Meatballs": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_125551213.png",
+  "Turkey Meatballs":                    "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_125551213.png",
+  "Not Your Mama\u2019s Turkey Meatballs": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_125551213.png",
+  "Not Your Mama's Turkey Meatballs":    "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_125551213.png",
   "Deluxe Burgers":          "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80",
   "Shrimp Stir Fry":         "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/IMG-20260501-WA0022.jpg",
   "Chicken Tikka Masala":    "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80",
@@ -651,7 +652,7 @@ export default function MenuApp() {
   const categoryKey = activeCategory.replace(/^\p{Emoji}\s*/u, "").trim();
   const CATEGORY_ORDER = ["Meal Prep", "Sides", "Catering", "Private Dinners", "Cookies"];
   const filtered = (isCombosTab || isBurgerTab || isWorkplaceTab) ? [] : (activeCategory === "All"
-    ? menuItems.filter((i) => i.category !== "Cookies").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
+    ? menuItems.sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
     : activeCategory === "Meal Prep"
       ? menuItems.filter((i) => i.category === "Meal Prep" || i.category === "Sides").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
       : menuItems.filter((i) => i.category === categoryKey));
@@ -790,7 +791,7 @@ export default function MenuApp() {
             )}
             {!loading && !error && filtered.length > 0 && categoryKey !== "Cookies" && (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "28px" }}>
-                {filtered.map((item) => (
+                {filtered.filter(i => i.category !== "Cookies").map((item) => (
                   <div key={item.id} className="menu-card">
                     <div className="img-wrap">
                       <img src={getImage(item)} alt={item.name} className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
@@ -818,9 +819,42 @@ export default function MenuApp() {
                   </div>
                 ))}
 
-                {/* Deluxe Burgers Card */}
+                {/* Burger Builder Card — shows in All and Meal Prep tabs */}
                 {(activeCategory === "All" || activeCategory === "Meal Prep") && (
                   <DeluxeBurgerCard onBuildBurger={() => setActiveCategory("🍔 Build a Burger")} />
+                )}
+
+                {/* Cookies Dropdown Card — shows in All tab only */}
+                {activeCategory === "All" && filtered.some(i => i.category === "Cookies") && (
+                  <div className="menu-card">
+                    <div className="img-wrap">
+                      <img src="https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg" alt="Almond Lavender Cookies" className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
+                      <div className="cat-badge">COOKIES</div>
+                    </div>
+                    <div style={{ padding: "20px 20px 18px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px", color: "#1A1208" }}>Almond Lavender Cookies</h2>
+                      </div>
+                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.65, color: "#6B5E4E", marginBottom: "14px" }}>Organic & Gluten-Free. Made with love by Chef Heather Janey.</p>
+                      <div style={{ marginBottom: "14px" }}>
+                        <select value={selectedCookie} onChange={(e) => setSelectedCookie(e.target.value)}
+                          style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #D4C9B8", borderRadius: "10px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", background: "#FEFAF4", outline: "none", cursor: "pointer" }}>
+                          <option value="" disabled>Choose a pack size...</option>
+                          {filtered.filter(i => i.category === "Cookies").map((item) => (
+                            <option key={item.id} value={item.id}>{item.name.replace("Almond Lavender Cookies - ", "")} — ${item.price}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #EEE8DF", paddingTop: "14px" }}>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>💡 Bigger packs = better savings!</div>
+                        <button disabled={!selectedCookie} className="add-btn"
+                          style={{ opacity: selectedCookie ? 1 : 0.4, cursor: selectedCookie ? "pointer" : "not-allowed" }}
+                          onClick={() => { const s = filtered.find(i => i.id === selectedCookie); if (s) { addToCart(s); setSelectedCookie(""); } }}>
+                          + Add to Order
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             )}
