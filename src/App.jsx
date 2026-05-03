@@ -28,7 +28,7 @@ const PLACEHOLDERS = {
   "BBQ Feast Package":       "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=80",
   "Elegant Brunch Spread":   "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=600&q=80",
   "Taco & Tequila Bar":      "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80",
-  "Date Night for Two":      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+  "Date Night for Two":      "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/1000070275%20(1).jpg",
   "Dinner Party Experience": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80",
   "Garlic Roasted Potatoes": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_102739586.png",
   "Steamed Jasmine Rice":    "https://images.unsplash.com/photo-1516684732162-798a0062be99?w=600&q=80",
@@ -56,7 +56,7 @@ const tagColors = {
   "Vegetarian Option": "#52B788", "GF Option": "#52B788",
 };
 
-const CATEGORIES = ["All", "Meal Prep", "Catering", "Private Dinners", "🍪 Cookies", "🍱 Combos"];
+const CATEGORIES = ["All", "Meal Prep", "Catering", "Private Dinners", "🍪 Cookies", "🍱 Combos", "🏢 Workplace Lunch", "🍔 Build a Burger"];
 
 function getImage(item) { return item.image_url || PLACEHOLDERS[item.name] || FALLBACK; }
 
@@ -492,6 +492,96 @@ function TermsOfService({ onClose }) {
   );
 }
 
+// ── Burger Builder ────────────────────────────────────────────────────────────
+const BURGER_OPTIONS = {
+  proteins: ["Chicken", "Turkey", "Beef", "Lamb", "Salmon", "Black Bean"],
+  cheeses:  ["Pepper Jack", "American", "Muenster", "Mozzarella", "Cheddar", "Colby Jack", "Vegan Cheese"],
+  sauces:   ["Mushroom Sauce", "Lemon Dill", "Spicy Garlic Aioli", "Broccoli Pesto", "Super Secret FFbyHJ Sauce"],
+};
+const BURGER_PRICE = 16;
+
+function BurgerBuilder({ onAddToCart }) {
+  const [protein, setProtein] = useState("");
+  const [cheese, setCheese]   = useState("");
+  const [sauce, setSauce]     = useState("");
+  const [added, setAdded]     = useState(false);
+  const isVegan = protein === "Black Bean";
+  const isComplete = protein && cheese && sauce;
+  const handleAdd = () => {
+    if (!isComplete) return;
+    const name = `Deluxe Burger — ${protein}, ${cheese}, ${sauce}`;
+    onAddToCart({ id: `burger-${Date.now()}`, name, price: BURGER_PRICE, qty: 1, category: "Burger",
+      description: `${protein} patty · ${cheese} · ${isVegan ? "No bacon (vegan)" : "Lettuce, Tomato & Bacon"} · ${sauce}` });
+    setProtein(""); setCheese(""); setSauce("");
+    setAdded(true); setTimeout(() => setAdded(false), 2500);
+  };
+  const OptionGrid = ({ options, selected, onSelect, label }) => (
+    <div style={{ marginBottom: "28px" }}>
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "20px", fontWeight: 600, marginBottom: "12px" }}>{label}</div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+        {options.map((opt) => (
+          <button key={opt} onClick={() => onSelect(opt)}
+            style={{ padding: "9px 18px", borderRadius: "100px", border: `2px solid ${selected === opt ? "#1A1208" : "#D4C9B8"}`,
+              background: selected === opt ? "#1A1208" : "#fff", color: selected === opt ? "#FEFAF4" : "#6B5E4E",
+              fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 500, cursor: "pointer", transition: "all 0.2s" }}>
+            {opt}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+  return (
+    <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+      <div style={{ background: "linear-gradient(135deg, #1A1208 0%, #3D2B1A 100%)", borderRadius: "20px", padding: "36px 40px", marginBottom: "36px", color: "#FEFAF4", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "20px" }}>
+        <div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.6, marginBottom: "8px" }}>Made your way</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "36px", fontWeight: 300, lineHeight: 1.1, marginBottom: "10px" }}>Build Your <em>Deluxe Burger</em></div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", opacity: 0.75, lineHeight: 1.6 }}>All burgers come with lettuce, tomatoes & bacon (vegan option excludes bacon). Served on a brioche bun.</div>
+        </div>
+        <div style={{ fontSize: "64px" }}>🍔</div>
+      </div>
+      <OptionGrid label="Step 1 — Choose Your Protein" options={BURGER_OPTIONS.proteins} selected={protein} onSelect={setProtein} />
+      {isVegan && <div style={{ background: "#52B78820", border: "1px solid #52B788", borderRadius: "10px", padding: "10px 16px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#2D8A5E", marginBottom: "20px" }}>🌱 Vegan option selected — bacon will be omitted.</div>}
+      <OptionGrid label="Step 2 — Choose Your Cheese" options={BURGER_OPTIONS.cheeses} selected={cheese} onSelect={setCheese} />
+      <OptionGrid label="Step 3 — Choose Your Sauce" options={BURGER_OPTIONS.sauces} selected={sauce} onSelect={setSauce} />
+      {isComplete && (
+        <div style={{ background: "#FEFAF4", border: "1px solid #EEE8DF", borderRadius: "16px", padding: "20px 24px", marginBottom: "24px" }}>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#B5A48C", marginBottom: "8px" }}>Your Burger</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "20px", fontWeight: 600, color: "#1A1208", marginBottom: "4px" }}>{protein} Deluxe Burger</div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#6B5E4E", lineHeight: 1.7 }}>{cheese} · {isVegan ? "No bacon" : "Lettuce, Tomato & Bacon"} · {sauce}</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "26px", fontWeight: 600, marginTop: "12px" }}>${BURGER_PRICE} <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#B5A48C", fontWeight: 400 }}>/ burger</span></div>
+        </div>
+      )}
+      <button onClick={handleAdd} disabled={!isComplete} className="add-btn"
+        style={{ width: "100%", padding: "14px", fontSize: "15px", opacity: isComplete ? 1 : 0.4, cursor: isComplete ? "pointer" : "not-allowed", background: added ? "#52B788" : "#1A1208", transition: "background 0.3s" }}>
+        {added ? "🍔 Added to Order!" : isComplete ? "+ Add Burger to Order" : "Complete all steps above"}
+      </button>
+    </div>
+  );
+}
+
+// ── Workplace Lunch ───────────────────────────────────────────────────────────
+function WorkplaceLunch() {
+  return (
+    <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+      <div style={{ background: "linear-gradient(135deg, #1A1208 0%, #3D2B1A 100%)", borderRadius: "20px", padding: "36px 40px", marginBottom: "36px", color: "#FEFAF4", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "20px" }}>
+        <div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.6, marginBottom: "8px" }}>Feed your team</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "36px", fontWeight: 300, lineHeight: 1.1, marginBottom: "10px" }}>Workplace <em>Lunch</em></div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", opacity: 0.75, lineHeight: 1.6 }}>Fresh, chef-prepared lunches delivered to your office. Heather is curating this menu — check back soon!</div>
+        </div>
+        <div style={{ fontSize: "64px" }}>🏢</div>
+      </div>
+      <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "48px 32px", textAlign: "center" }}>
+        <div style={{ fontSize: "48px", marginBottom: "16px" }}>👩‍🍳</div>
+        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 600, marginBottom: "12px", color: "#1A1208" }}>Coming Soon</div>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.7, maxWidth: "400px", margin: "0 auto 24px" }}>Heather is curating a special condensed menu just for workplace lunches. In the meantime, reach out directly to discuss your team's needs!</p>
+        <a href="tel:7742053071" style={{ display: "inline-block", background: "#1A1208", color: "#FEFAF4", borderRadius: "100px", padding: "12px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>📞 Call Heather</a>
+      </div>
+    </div>
+  );
+}
+
 // ── Main App ──────────────────────────────────────────────────────────────────
 export default function MenuApp() {
   const [menuItems, setMenuItems]       = useState([]);
@@ -522,10 +612,12 @@ export default function MenuApp() {
     finally { setLoading(false); }
   };
 
-  const isCombosTab = activeCategory === "🍱 Combos";
+  const isCombosTab     = activeCategory === "🍱 Combos";
+  const isBurgerTab     = activeCategory === "🍔 Build a Burger";
+  const isWorkplaceTab  = activeCategory === "🏢 Workplace Lunch";
   const categoryKey = activeCategory.replace(/^\p{Emoji}\s*/u, "").trim();
   const CATEGORY_ORDER = ["Meal Prep", "Sides", "Catering", "Private Dinners", "Cookies"];
-  const filtered = isCombosTab ? [] : (activeCategory === "All"
+  const filtered = (isCombosTab || isBurgerTab || isWorkplaceTab) ? [] : (activeCategory === "All"
     ? menuItems.sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
     : activeCategory === "Meal Prep"
       ? menuItems.filter((i) => i.category === "Meal Prep" || i.category === "Sides").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
@@ -608,6 +700,17 @@ export default function MenuApp() {
         ))}
       </div>
 
+      {/* 🧊 Fresh Never Frozen Banner */}
+      {(activeCategory === "All" || activeCategory === "Meal Prep") && (
+        <div style={{ background: "linear-gradient(135deg, #1A1208 0%, #3D2B1A 100%)", margin: "0 32px 32px", borderRadius: "16px", padding: "18px 28px", display: "flex", alignItems: "center", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "28px" }}>🧊</span>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontStyle: "italic", color: "#FEFAF4", textAlign: "center" }}>
+            Frozen is for ice cream. Not your meals.
+          </div>
+          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C", letterSpacing: "0.1em", textTransform: "uppercase" }}>— Always Fresh</span>
+        </div>
+      )}
+
       {/* Content */}
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px 80px" }}>
 
@@ -616,9 +719,16 @@ export default function MenuApp() {
           <ComboBuilder menuItems={menuItems} onAddCombo={(combo) => { addCombo(combo); setShowCart(true); setView("cart"); }} />
         )}
 
+        {/* Burger Builder Tab */}
+        {isBurgerTab && (
+          <BurgerBuilder onAddToCart={(item) => { addToCart(item); setShowCart(true); setView("cart"); }} />
+        )}
+
+        {/* Workplace Lunch Tab */}
+        {isWorkplaceTab && <WorkplaceLunch />}
+
         {/* Regular Menu */}
-        {!isCombosTab && (
-          <>
+        {!isCombosTab && !isBurgerTab && !isWorkplaceTab && (
             {loading && <div style={{ textAlign: "center", paddingTop: "60px" }}><div className="spinner" /><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#B5A48C", fontSize: "14px" }}>Loading the menu…</div></div>}
             {error && <div style={{ textAlign: "center", paddingTop: "60px" }}><div style={{ fontSize: "48px", marginBottom: "16px" }}>😔</div><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#E76F51", fontSize: "15px", marginBottom: "16px" }}>{error}</div><button className="add-btn" onClick={fetchMenu}>Try Again</button></div>}
             {!loading && !error && filtered.length === 0 && <div style={{ textAlign: "center", paddingTop: "60px" }}><div style={{ fontSize: "48px", marginBottom: "16px" }}>🍽️</div><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#B5A48C", fontSize: "15px" }}>No items in this category right now.<br />Check back soon!</div></div>}
