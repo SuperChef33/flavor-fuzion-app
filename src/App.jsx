@@ -14,7 +14,9 @@ const PLACEHOLDERS = {
   "Herb-Crusted Salmon Bowl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80",
   "Mediterranean Chicken":   "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/IMG-20260501-WA0021.jpg",
   "Teriyaki Salmon":         "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80",
-  "Turkey Meatballs":        "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&q=80",
+  "Turkey Meatballs":        "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_125551213.png",
+  "Not Your Mama's Turkey Meatballs": "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/Photoroom-20260502_125551213.png",
+  "Deluxe Burgers":          "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80",
   "Shrimp Stir Fry":         "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/IMG-20260501-WA0022.jpg",
   "Chicken Tikka Masala":    "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80",
   "Beef & Broccoli":         "https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/IMG-20260501-WA0018.jpg",
@@ -575,8 +577,39 @@ function WorkplaceLunch() {
       <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "48px 32px", textAlign: "center" }}>
         <div style={{ fontSize: "48px", marginBottom: "16px" }}>👩‍🍳</div>
         <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 600, marginBottom: "12px", color: "#1A1208" }}>Coming Soon</div>
-        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.7, maxWidth: "400px", margin: "0 auto 24px" }}>Heather is curating a special condensed menu just for workplace lunches. In the meantime, reach out directly!</p>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.7, maxWidth: "400px", margin: "0 auto 24px" }}>Heather is curating a special menu just for workplace lunches. In the meantime, reach out directly!</p>
         <a href="tel:7742053071" style={{ display: "inline-block", background: "#1A1208", color: "#FEFAF4", borderRadius: "100px", padding: "12px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>📞 Call Heather</a>
+      </div>
+    </div>
+  );
+}
+
+// ── Deluxe Burger Card ────────────────────────────────────────────────────────
+function DeluxeBurgerCard({ onBuildBurger }) {
+  return (
+    <div className="menu-card" style={{ cursor: "pointer" }} onClick={onBuildBurger}>
+      <div className="img-wrap">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" alt="Deluxe Burgers" className="food-img" />
+        <div className="cat-badge">MEAL PREP</div>
+      </div>
+      <div style={{ padding: "20px 20px 18px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px", color: "#1A1208" }}>Build Your Deluxe Burger</h2>
+          <div style={{ textAlign: "right", flexShrink: 0 }}>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "26px", fontWeight: 600 }}>$16</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#B5A48C" }}>/ burger</div>
+          </div>
+        </div>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.65, color: "#6B5E4E", marginBottom: "14px" }}>Choose your protein, cheese & sauce. All burgers come with lettuce, tomatoes & bacon on a brioche bun.</p>
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "16px" }}>
+          {["Chicken", "Beef", "Salmon", "Vegan Option"].map(tag => (
+            <span key={tag} className="tag" style={{ background: "#D4C9B830", color: "#6B5E4E", border: "1px solid #D4C9B860" }}>{tag}</span>
+          ))}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #EEE8DF", paddingTop: "14px" }}>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>🍔 Fully customizable</div>
+          <button className="add-btn" onClick={(e) => { e.stopPropagation(); onBuildBurger(); }}>Build Now →</button>
+        </div>
       </div>
     </div>
   );
@@ -784,6 +817,11 @@ export default function MenuApp() {
                     </div>
                   </div>
                 ))}
+
+                {/* Deluxe Burgers Card */}
+                {(activeCategory === "All" || activeCategory === "Meal Prep") && (
+                  <DeluxeBurgerCard onBuildBurger={() => setActiveCategory("🍔 Build a Burger")} />
+                )}
               </div>
             )}
           </>
