@@ -585,6 +585,37 @@ function WorkplaceLunch() {
   );
 }
 
+// ── Reusable Menu Item Card ───────────────────────────────────────────────────
+function MealCard({ item, onAdd }) {
+  return (
+    <div className="menu-card">
+      <div className="img-wrap">
+        <img src={getImage(item)} alt={item.name} className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
+        <div className="cat-badge">{item.category?.toUpperCase()}</div>
+      </div>
+      <div style={{ padding: "20px 20px 18px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px", color: "#1A1208" }}>{item.name}</h2>
+          <div style={{ textAlign: "right", flexShrink: 0 }}>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "26px", fontWeight: 600 }}>${item.price}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#B5A48C" }}>{item.unit}</div>
+          </div>
+        </div>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.65, color: "#6B5E4E", marginBottom: "14px" }}>{item.description}</p>
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "16px" }}>
+          {(item.tags || []).map((tag) => (
+            <span key={tag} className="tag" style={{ background: (tagColors[tag] || "#D4C9B8") + "30", color: tagColors[tag] || "#6B5E4E", border: `1px solid ${(tagColors[tag] || "#D4C9B8")}60` }}>{tag}</span>
+          ))}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #EEE8DF", paddingTop: "14px" }}>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>📦 {item.servings}</div>
+          <button className="add-btn" onClick={onAdd}>+ Add to Order</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Deluxe Burger Card ────────────────────────────────────────────────────────
 function DeluxeBurgerCard({ onBuildBurger }) {
   return (
@@ -792,67 +823,25 @@ export default function MenuApp() {
             {!loading && !error && filtered.length > 0 && categoryKey !== "Cookies" && (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "28px" }}>
 
-                {/* Meal Prep & Sides items first */}
-                {filtered.filter(i => i.category === "Meal Prep" || i.category === "Sides").map((item) => (
-                  <div key={item.id} className="menu-card">
-                    <div className="img-wrap">
-                      <img src={getImage(item)} alt={item.name} className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
-                      <div className="cat-badge">{item.category?.toUpperCase()}</div>
-                    </div>
-                    <div style={{ padding: "20px 20px 18px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
-                        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px", color: "#1A1208" }}>{item.name}</h2>
-                        <div style={{ textAlign: "right", flexShrink: 0 }}>
-                          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "26px", fontWeight: 600 }}>${item.price}</div>
-                          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#B5A48C" }}>{item.unit}</div>
-                        </div>
-                      </div>
-                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.65, color: "#6B5E4E", marginBottom: "14px" }}>{item.description}</p>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "16px" }}>
-                        {(item.tags || []).map((tag) => (
-                          <span key={tag} className="tag" style={{ background: (tagColors[tag] || "#D4C9B8") + "30", color: tagColors[tag] || "#6B5E4E", border: `1px solid ${(tagColors[tag] || "#D4C9B8")}60` }}>{tag}</span>
-                        ))}
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #EEE8DF", paddingTop: "14px" }}>
-                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>📦 {item.servings}</div>
-                        <button className="add-btn" onClick={() => addToCart(item)}>+ Add to Order</button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Burger Builder Card — right after meal prep items */}
-                {(activeCategory === "All" || activeCategory === "Meal Prep") && (
-                  <DeluxeBurgerCard onBuildBurger={() => setActiveCategory("🍔 Build a Burger")} />
-                )}
+                {/* Meal Prep & Sides items with burger card injected at position 4 */}
+                {(() => {
+                  const mealPrepItems = filtered.filter(i => i.category === "Meal Prep" || i.category === "Sides");
+                  const burgerCard = (activeCategory === "All" || activeCategory === "Meal Prep")
+                    ? [<DeluxeBurgerCard key="burger-card" onBuildBurger={() => setActiveCategory("🍔 Build a Burger")} />]
+                    : [];
+                  const insertAt = 3; // 0-indexed, so position 4
+                  const before = mealPrepItems.slice(0, insertAt);
+                  const after = mealPrepItems.slice(insertAt);
+                  return [
+                    ...before.map((item) => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
+                    ...burgerCard,
+                    ...after.map((item) => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
+                  ];
+                })()}
 
                 {/* All other categories (Catering, Private Dinners) */}
                 {filtered.filter(i => i.category !== "Meal Prep" && i.category !== "Sides" && i.category !== "Cookies").map((item) => (
-                  <div key={item.id} className="menu-card">
-                    <div className="img-wrap">
-                      <img src={getImage(item)} alt={item.name} className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
-                      <div className="cat-badge">{item.category?.toUpperCase()}</div>
-                    </div>
-                    <div style={{ padding: "20px 20px 18px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
-                        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px", color: "#1A1208" }}>{item.name}</h2>
-                        <div style={{ textAlign: "right", flexShrink: 0 }}>
-                          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "26px", fontWeight: 600 }}>${item.price}</div>
-                          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#B5A48C" }}>{item.unit}</div>
-                        </div>
-                      </div>
-                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.65, color: "#6B5E4E", marginBottom: "14px" }}>{item.description}</p>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "16px" }}>
-                        {(item.tags || []).map((tag) => (
-                          <span key={tag} className="tag" style={{ background: (tagColors[tag] || "#D4C9B8") + "30", color: tagColors[tag] || "#6B5E4E", border: `1px solid ${(tagColors[tag] || "#D4C9B8")}60` }}>{tag}</span>
-                        ))}
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #EEE8DF", paddingTop: "14px" }}>
-                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>📦 {item.servings}</div>
-                        <button className="add-btn" onClick={() => addToCart(item)}>+ Add to Order</button>
-                      </div>
-                    </div>
-                  </div>
+                  <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />
                 ))}
 
                 {/* Cookies Dropdown Card — shows in All tab only */}
