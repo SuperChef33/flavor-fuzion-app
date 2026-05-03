@@ -575,7 +575,7 @@ function WorkplaceLunch() {
       <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "48px 32px", textAlign: "center" }}>
         <div style={{ fontSize: "48px", marginBottom: "16px" }}>👩‍🍳</div>
         <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 600, marginBottom: "12px", color: "#1A1208" }}>Coming Soon</div>
-        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.7, maxWidth: "400px", margin: "0 auto 24px" }}>Heather is curating a special condensed menu just for workplace lunches. In the meantime, reach out directly to discuss your team's needs!</p>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.7, maxWidth: "400px", margin: "0 auto 24px" }}>Heather is curating a special condensed menu just for workplace lunches. In the meantime, reach out directly!</p>
         <a href="tel:7742053071" style={{ display: "inline-block", background: "#1A1208", color: "#FEFAF4", borderRadius: "100px", padding: "12px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>📞 Call Heather</a>
       </div>
     </div>
@@ -612,13 +612,13 @@ export default function MenuApp() {
     finally { setLoading(false); }
   };
 
-  const isCombosTab     = activeCategory === "🍱 Combos";
-  const isBurgerTab     = activeCategory === "🍔 Build a Burger";
-  const isWorkplaceTab  = activeCategory === "🏢 Workplace Lunch";
+  const isCombosTab    = activeCategory === "🍱 Combos";
+  const isBurgerTab    = activeCategory === "🍔 Build a Burger";
+  const isWorkplaceTab = activeCategory === "🏢 Workplace Lunch";
   const categoryKey = activeCategory.replace(/^\p{Emoji}\s*/u, "").trim();
   const CATEGORY_ORDER = ["Meal Prep", "Sides", "Catering", "Private Dinners", "Cookies"];
   const filtered = (isCombosTab || isBurgerTab || isWorkplaceTab) ? [] : (activeCategory === "All"
-    ? menuItems.sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
+    ? menuItems.filter((i) => i.category !== "Cookies").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
     : activeCategory === "Meal Prep"
       ? menuItems.filter((i) => i.category === "Meal Prep" || i.category === "Sides").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
       : menuItems.filter((i) => i.category === categoryKey));
@@ -704,31 +704,18 @@ export default function MenuApp() {
       {(activeCategory === "All" || activeCategory === "Meal Prep") && (
         <div style={{ background: "linear-gradient(135deg, #1A1208 0%, #3D2B1A 100%)", margin: "0 32px 32px", borderRadius: "16px", padding: "18px 28px", display: "flex", alignItems: "center", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
           <span style={{ fontSize: "28px" }}>🧊</span>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontStyle: "italic", color: "#FEFAF4", textAlign: "center" }}>
-            Frozen is for ice cream. Not your meals.
-          </div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontStyle: "italic", color: "#FEFAF4", textAlign: "center" }}>Frozen is for ice cream. Not your meals.</div>
           <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C", letterSpacing: "0.1em", textTransform: "uppercase" }}>— Always Fresh</span>
         </div>
       )}
 
       {/* Content */}
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px 80px" }}>
-
-        {/* Combos Tab */}
-        {isCombosTab && (
-          <ComboBuilder menuItems={menuItems} onAddCombo={(combo) => { addCombo(combo); setShowCart(true); setView("cart"); }} />
-        )}
-
-        {/* Burger Builder Tab */}
-        {isBurgerTab && (
-          <BurgerBuilder onAddToCart={(item) => { addToCart(item); setShowCart(true); setView("cart"); }} />
-        )}
-
-        {/* Workplace Lunch Tab */}
+        {isCombosTab && <ComboBuilder menuItems={menuItems} onAddCombo={(combo) => { addCombo(combo); setShowCart(true); setView("cart"); }} />}
+        {isBurgerTab && <BurgerBuilder onAddToCart={(item) => { addToCart(item); setShowCart(true); setView("cart"); }} />}
         {isWorkplaceTab && <WorkplaceLunch />}
-
-        {/* Regular Menu */}
         {!isCombosTab && !isBurgerTab && !isWorkplaceTab && (
+          <>
             {loading && <div style={{ textAlign: "center", paddingTop: "60px" }}><div className="spinner" /><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#B5A48C", fontSize: "14px" }}>Loading the menu…</div></div>}
             {error && <div style={{ textAlign: "center", paddingTop: "60px" }}><div style={{ fontSize: "48px", marginBottom: "16px" }}>😔</div><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#E76F51", fontSize: "15px", marginBottom: "16px" }}>{error}</div><button className="add-btn" onClick={fetchMenu}>Try Again</button></div>}
             {!loading && !error && filtered.length === 0 && <div style={{ textAlign: "center", paddingTop: "60px" }}><div style={{ fontSize: "48px", marginBottom: "16px" }}>🍽️</div><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#B5A48C", fontSize: "15px" }}>No items in this category right now.<br />Check back soon!</div></div>}
