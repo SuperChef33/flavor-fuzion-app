@@ -618,7 +618,7 @@ export default function MenuApp() {
   const categoryKey = activeCategory.replace(/^\p{Emoji}\s*/u, "").trim();
   const CATEGORY_ORDER = ["Meal Prep", "Sides", "Catering", "Private Dinners", "Cookies"];
   const filtered = (isCombosTab || isBurgerTab || isWorkplaceTab) ? [] : (activeCategory === "All"
-    ? menuItems.filter((i) => i.category !== "Cookies").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
+    ? menuItems.sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
     : activeCategory === "Meal Prep"
       ? menuItems.filter((i) => i.category === "Meal Prep" || i.category === "Sides").sort((a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category))
       : menuItems.filter((i) => i.category === categoryKey));
