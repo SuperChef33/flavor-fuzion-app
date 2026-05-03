@@ -791,7 +791,9 @@ export default function MenuApp() {
             )}
             {!loading && !error && filtered.length > 0 && categoryKey !== "Cookies" && (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "28px" }}>
-                {filtered.filter(i => i.category !== "Cookies").map((item) => (
+
+                {/* Meal Prep & Sides items first */}
+                {filtered.filter(i => i.category === "Meal Prep" || i.category === "Sides").map((item) => (
                   <div key={item.id} className="menu-card">
                     <div className="img-wrap">
                       <img src={getImage(item)} alt={item.name} className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
@@ -819,10 +821,39 @@ export default function MenuApp() {
                   </div>
                 ))}
 
-                {/* Burger Builder Card — shows in All and Meal Prep tabs */}
+                {/* Burger Builder Card — right after meal prep items */}
                 {(activeCategory === "All" || activeCategory === "Meal Prep") && (
                   <DeluxeBurgerCard onBuildBurger={() => setActiveCategory("🍔 Build a Burger")} />
                 )}
+
+                {/* All other categories (Catering, Private Dinners) */}
+                {filtered.filter(i => i.category !== "Meal Prep" && i.category !== "Sides" && i.category !== "Cookies").map((item) => (
+                  <div key={item.id} className="menu-card">
+                    <div className="img-wrap">
+                      <img src={getImage(item)} alt={item.name} className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
+                      <div className="cat-badge">{item.category?.toUpperCase()}</div>
+                    </div>
+                    <div style={{ padding: "20px 20px 18px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px", color: "#1A1208" }}>{item.name}</h2>
+                        <div style={{ textAlign: "right", flexShrink: 0 }}>
+                          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "26px", fontWeight: 600 }}>${item.price}</div>
+                          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#B5A48C" }}>{item.unit}</div>
+                        </div>
+                      </div>
+                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.65, color: "#6B5E4E", marginBottom: "14px" }}>{item.description}</p>
+                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "16px" }}>
+                        {(item.tags || []).map((tag) => (
+                          <span key={tag} className="tag" style={{ background: (tagColors[tag] || "#D4C9B8") + "30", color: tagColors[tag] || "#6B5E4E", border: `1px solid ${(tagColors[tag] || "#D4C9B8")}60` }}>{tag}</span>
+                        ))}
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #EEE8DF", paddingTop: "14px" }}>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>📦 {item.servings}</div>
+                        <button className="add-btn" onClick={() => addToCart(item)}>+ Add to Order</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
 
                 {/* Cookies Dropdown Card — shows in All tab only */}
                 {activeCategory === "All" && filtered.some(i => i.category === "Cookies") && (
