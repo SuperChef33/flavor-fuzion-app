@@ -449,7 +449,7 @@ function PrivacyPolicy({ onClose }) {
           { title: "6. Your Rights (Massachusetts Residents)", body: "Under Massachusetts law, you have the right to request access to, correction of, or deletion of your personal information. To exercise these rights, please contact us at the email below." },
           { title: "7. Children's Privacy", body: "Our services are not directed to children under the age of 13. We do not knowingly collect personal information from children." },
           { title: "8. Changes to This Policy", body: "We may update this Privacy Policy from time to time. We will notify you of significant changes by updating the effective date at the top of this page." },
-          { title: "9. Contact Us", body: "If you have questions about this Privacy Policy, please contact us at: FlavorFuzionbHJ@Outlook.com" },
+          { title: "9. Contact Us", body: "If you have questions about this Privacy Policy, please contact us at: FlavorFuzionbHJ@Outlook.com | 131 Samoset Street #1027, Plymouth, MA 02360" },
         ].map(({ title, body }) => (
           <div key={title} style={{ marginBottom: "24px" }}>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "20px", fontWeight: 600, color: "#1A1208", marginBottom: "8px" }}>{title}</h2>
@@ -482,7 +482,7 @@ function TermsOfService({ onClose }) {
           { title: "8. Limitation of Liability", body: "To the fullest extent permitted by Massachusetts law, Flavor Fuzion by Heather Janey shall not be liable for any indirect, incidental, or consequential damages arising from use of our services." },
           { title: "9. Governing Law", body: "These Terms of Service are governed by the laws of the Commonwealth of Massachusetts. Any disputes shall be resolved in the courts of Massachusetts." },
           { title: "10. Changes to These Terms", body: "We reserve the right to update these Terms at any time. Continued use of our platform after changes constitutes acceptance of the updated Terms." },
-          { title: "11. Contact Us", body: "If you have questions about these Terms, please contact us at: FlavorFuzionbHJ@Outlook.com" },
+          { title: "11. Contact Us", body: "If you have questions about these Terms, please contact us at: FlavorFuzionbHJ@Outlook.com | 131 Samoset Street #1027, Plymouth, MA 02360" },
         ].map(({ title, body }) => (
           <div key={title} style={{ marginBottom: "24px" }}>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "20px", fontWeight: 600, color: "#1A1208", marginBottom: "8px" }}>{title}</h2>
