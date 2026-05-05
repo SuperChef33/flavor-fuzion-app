@@ -564,23 +564,48 @@ function BurgerBuilder({ onAddToCart }) {
 }
 
 // ── Workplace Lunch ───────────────────────────────────────────────────────────
-function WorkplaceLunch() {
+function WorkplaceLunch({ onAddToCart }) {
+  const [items, setItems]     = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${SUPABASE_URL}/rest/v1/workplace_menu?active=eq.true&order=category.asc,name.asc`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    })
+      .then(r => r.json())
+      .then(data => { setItems(Array.isArray(data) ? data : []); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
   return (
-    <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "900px", margin: "0 auto" }}>
       <div style={{ background: "linear-gradient(135deg, #1A1208 0%, #3D2B1A 100%)", borderRadius: "20px", padding: "36px 40px", marginBottom: "36px", color: "#FEFAF4", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "20px" }}>
         <div>
           <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.6, marginBottom: "8px" }}>Feed your team</div>
           <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "36px", fontWeight: 300, lineHeight: 1.1, marginBottom: "10px" }}>Workplace <em>Lunch</em></div>
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", opacity: 0.75, lineHeight: 1.6 }}>Fresh, chef-prepared lunches delivered to your office. Heather is curating this menu — check back soon!</div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", opacity: 0.75, lineHeight: 1.6 }}>Fresh, chef-prepared lunches delivered to your office.</div>
         </div>
         <div style={{ fontSize: "64px" }}>🏢</div>
       </div>
-      <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "48px 32px", textAlign: "center" }}>
-        <div style={{ fontSize: "48px", marginBottom: "16px" }}>👩‍🍳</div>
-        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 600, marginBottom: "12px", color: "#1A1208" }}>Coming Soon</div>
-        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.7, maxWidth: "400px", margin: "0 auto 24px" }}>Heather is curating a special menu just for workplace lunches. In the meantime, reach out directly!</p>
-        <a href="tel:7742053071" style={{ display: "inline-block", background: "#1A1208", color: "#FEFAF4", borderRadius: "100px", padding: "12px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>📞 Call Heather</a>
-      </div>
+
+      {loading && <div style={{ textAlign: "center", paddingTop: "40px", fontFamily: "'DM Sans', sans-serif", color: "#B5A48C" }}>Loading menu…</div>}
+
+      {!loading && items.length === 0 && (
+        <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "48px 32px", textAlign: "center" }}>
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>👩‍🍳</div>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 600, marginBottom: "12px", color: "#1A1208" }}>Coming Soon</div>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "#6B5E4E", lineHeight: 1.7, maxWidth: "400px", margin: "0 auto 24px" }}>Heather is curating a special menu just for workplace lunches. In the meantime, reach out directly!</p>
+          <a href="tel:7742053071" style={{ display: "inline-block", background: "#1A1208", color: "#FEFAF4", borderRadius: "100px", padding: "12px 28px", fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 500, textDecoration: "none" }}>📞 Call Heather</a>
+        </div>
+      )}
+
+      {!loading && items.length > 0 && (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "28px" }}>
+          {items.map(item => (
+            <MealCard key={item.id} item={item} onAdd={() => onAddToCart(item)} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -778,7 +803,7 @@ export default function MenuApp() {
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px 80px" }}>
         {isCombosTab && <ComboBuilder menuItems={menuItems} onAddCombo={(combo) => { addCombo(combo); setShowCart(true); setView("cart"); }} />}
         {isBurgerTab && <BurgerBuilder onAddToCart={(item) => { addToCart(item); setShowCart(true); setView("cart"); }} />}
-        {isWorkplaceTab && <WorkplaceLunch />}
+        {isWorkplaceTab && <WorkplaceLunch onAddToCart={(item) => { addToCart(item); setShowCart(true); setView("cart"); }} />}
         {!isCombosTab && !isBurgerTab && !isWorkplaceTab && (
           <>
             {loading && <div style={{ textAlign: "center", paddingTop: "60px" }}><div className="spinner" /><div style={{ fontFamily: "'DM Sans', sans-serif", color: "#B5A48C", fontSize: "14px" }}>Loading the menu…</div></div>}
