@@ -570,7 +570,7 @@ function WorkplaceLunch({ onAddToCart }) {
 
   useEffect(() => {
     fetch(`${SUPABASE_URL}/rest/v1/workplace_menu?active=eq.true&order=category.asc,name.asc`, {
-      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
     })
       .then(r => r.json())
       .then(data => { setItems(Array.isArray(data) ? data : []); setLoading(false); })
