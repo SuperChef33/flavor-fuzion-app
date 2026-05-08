@@ -610,6 +610,33 @@ function WorkplaceLunch({ onAddToCart }) {
   );
 }
 
+// ── Fine Dining Text Row (no photo items) ────────────────────────────────────
+function TextMenuItem({ item, onAdd }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", padding: "16px 0", borderBottom: "1px solid #EEE8DF" }}>
+      <div style={{ flex: 1 }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "4px", flexWrap: "wrap" }}>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", fontWeight: 600, color: "#1A1208" }}>{item.name}</div>
+          <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+            {(item.tags || []).map((tag) => (
+              <span key={tag} style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "100px", background: (tagColors[tag] || "#D4C9B8") + "20", color: tagColors[tag] || "#6B5E4E", border: `1px solid ${(tagColors[tag] || "#D4C9B8")}50` }}>{tag}</span>
+            ))}
+          </div>
+        </div>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#6B5E4E", lineHeight: 1.6, marginBottom: "4px" }}>{item.description}</div>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#B5A48C" }}>📦 {item.servings}</div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "8px", flexShrink: 0 }}>
+        <div style={{ textAlign: "right" }}>
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, color: "#1A1208" }}>${item.price}</div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10px", color: "#B5A48C" }}>{item.unit}</div>
+        </div>
+        <button className="add-btn" style={{ fontSize: "12px", padding: "8px 16px" }} onClick={onAdd}>+ Add to Order</button>
+      </div>
+    </div>
+  );
+}
+
 // ── Reusable Menu Item Card ───────────────────────────────────────────────────
 function MealCard({ item, onAdd }) {
   return (
@@ -847,60 +874,96 @@ export default function MenuApp() {
             )}
             {!loading && !error && filtered.length > 0 && categoryKey !== "Cookies" && (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "28px" }}>
-
-                {/* Meal Prep & Sides items with burger card injected at position 4 */}
                 {(() => {
-                  const mealPrepItems = filtered.filter(i => i.category === "Meal Prep" || i.category === "Sides");
-                  const burgerCard = (activeCategory === "All" || activeCategory === "Meal Prep")
-                    ? [<DeluxeBurgerCard key="burger-card" onBuildBurger={() => setActiveCategory("🍔 Build a Burger")} />]
-                    : [];
-                  const insertAt = 3; // 0-indexed, so position 4
-                  const before = mealPrepItems.slice(0, insertAt);
-                  const after = mealPrepItems.slice(insertAt);
+                  const CATEGORY_ORDER = ["Meal Prep", "Sides", "Catering", "Private Dinners"];
+                  const isAll = activeCategory === "All";
+                  const isMealPrep = activeCategory === "Meal Prep";
+
+                  if (isAll || isMealPrep) {
+                    const mealPrepOnly = filtered.filter(i => i.category === "Meal Prep");
+                    const sidesOnly = filtered.filter(i => i.category === "Sides");
+                    const mealPrepWithPhoto = mealPrepOnly.filter(i => !!(i.image_url || PLACEHOLDERS[i.name]));
+                    const mealPrepNoPhoto = mealPrepOnly.filter(i => !(i.image_url || PLACEHOLDERS[i.name]));
+                    const sidesWithPhoto = sidesOnly.filter(i => !!(i.image_url || PLACEHOLDERS[i.name]));
+                    const sidesNoPhoto = sidesOnly.filter(i => !(i.image_url || PLACEHOLDERS[i.name]));
+                    const burgerInsertAt = 3;
+                    const beforeBurger = mealPrepWithPhoto.slice(0, burgerInsertAt);
+                    const afterBurger = mealPrepWithPhoto.slice(burgerInsertAt);
+                    const burgerCard = <DeluxeBurgerCard key="burger-card" onBuildBurger={() => setActiveCategory("🍔 Build a Burger")} />;
+
+                    const makeBanner = (key, emoji, label) => (
+                      <div key={key} style={{ gridColumn: "1 / -1", background: "linear-gradient(135deg, #0F1A0F 0%, #4A1B6B 100%)", borderRadius: "16px", padding: "18px 24px", display: "flex", alignItems: "center", gap: "14px", position: "relative", overflow: "hidden" }}>
+                        <div style={{ position: "absolute", top: "-30px", right: "-30px", width: "120px", height: "120px", borderRadius: "50%", background: "rgba(212,168,51,0.15)" }} />
+                        <span style={{ fontSize: "22px", position: "relative", zIndex: 1 }}>{emoji}</span>
+                        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 300, color: "#FEFAF4", position: "relative", zIndex: 1 }}>{label}</div>
+                      </div>
+                    );
+
+                    const otherCategories = isAll
+                      ? [...new Set(filtered.filter(i => i.category !== "Meal Prep" && i.category !== "Sides" && i.category !== "Cookies").map(i => i.category))]
+                      : [];
+
+                    return [
+                      isAll ? makeBanner("banner-mp", "🍽️", "Meal Prep") : null,
+                      ...beforeBurger.map(item => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
+                      burgerCard,
+                      ...afterBurger.map(item => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
+                      mealPrepNoPhoto.length > 0 ? (
+                        <div key="text-meal-prep" style={{ gridColumn: "1 / -1", background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "8px 24px 0" }}>
+                          {mealPrepNoPhoto.map(item => <TextMenuItem key={item.id} item={item} onAdd={() => addToCart(item)} />)}
+                        </div>
+                      ) : null,
+                      sidesOnly.length > 0 ? makeBanner("banner-sides", "🥗", "Sides") : null,
+                      ...sidesWithPhoto.map(item => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
+                      sidesNoPhoto.length > 0 ? (
+                        <div key="text-sides" style={{ gridColumn: "1 / -1", background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "8px 24px 0" }}>
+                          {sidesNoPhoto.map(item => <TextMenuItem key={item.id} item={item} onAdd={() => addToCart(item)} />)}
+                        </div>
+                      ) : null,
+                      ...otherCategories.flatMap(cat => {
+                        const catItems = filtered.filter(i => i.category === cat);
+                        const withPhoto = catItems.filter(i => !!(i.image_url || PLACEHOLDERS[i.name]));
+                        const noPhoto = catItems.filter(i => !(i.image_url || PLACEHOLDERS[i.name]));
+                        const catEmoji = {"Catering":"🎉","Private Dinners":"🍷"}[cat] || "🍽️";
+                        return [
+                          makeBanner(`banner-${cat}`, catEmoji, cat),
+                          ...withPhoto.map(item => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
+                          noPhoto.length > 0 ? <div key={`text-${cat}`} style={{ gridColumn: "1 / -1", background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "8px 24px 0" }}>{noPhoto.map(item => <TextMenuItem key={item.id} item={item} onAdd={() => addToCart(item)} />)}</div> : null,
+                        ].filter(Boolean);
+                      }),
+                      isAll && filtered.some(i => i.category === "Cookies") ? (
+                        <>
+                          {makeBanner("banner-cookies", "🍪", "Cookies")}
+                          <div key="cookies-card" className="menu-card">
+                            <div className="img-wrap">
+                              <img src="https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg" alt="Almond Lavender Cookies" className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
+                              <div className="cat-badge">COOKIES</div>
+                            </div>
+                            <div style={{ padding: "20px 20px 18px" }}>
+                              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, color: "#1A1208", marginBottom: "8px" }}>Almond Lavender Cookies</h2>
+                              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#6B5E4E", marginBottom: "14px" }}>Organic & Gluten-Free. Made with love by Chef Heather Janey.</p>
+                              <select value={selectedCookie} onChange={(e) => setSelectedCookie(e.target.value)} style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #D4C9B8", borderRadius: "10px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", background: "#FEFAF4", outline: "none", marginBottom: "14px" }}>
+                                <option value="" disabled>Choose a pack size...</option>
+                                {filtered.filter(i => i.category === "Cookies").map((item) => (
+                                  <option key={item.id} value={item.id}>{item.name.replace("Almond Lavender Cookies - ", "")} — ${item.price}</option>
+                                ))}
+                              </select>
+                              <button disabled={!selectedCookie} className="add-btn" style={{ width: "100%", opacity: selectedCookie ? 1 : 0.4 }} onClick={() => { const s = filtered.find(i => i.id === selectedCookie); if (s) { addToCart(s); setSelectedCookie(""); } }}>+ Add to Order</button>
+                            </div>
+                          </div>
+                        </>
+                      ) : null,
+                    ].filter(Boolean);
+                  }
+
+                  // Single category tabs (Catering, Private Dinners, etc.)
+                  const withPhoto = filtered.filter(i => !!(i.image_url || PLACEHOLDERS[i.name]));
+                  const noPhoto = filtered.filter(i => !(i.image_url || PLACEHOLDERS[i.name]));
                   return [
-                    ...before.map((item) => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
-                    ...burgerCard,
-                    ...after.map((item) => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
-                  ];
+                    ...withPhoto.map(item => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
+                    noPhoto.length > 0 ? <div key="text-items" style={{ gridColumn: "1 / -1", background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "8px 24px 0" }}>{noPhoto.map(item => <TextMenuItem key={item.id} item={item} onAdd={() => addToCart(item)} />)}</div> : null,
+                  ].filter(Boolean);
                 })()}
-
-                {/* All other categories (Catering, Private Dinners) */}
-                {filtered.filter(i => i.category !== "Meal Prep" && i.category !== "Sides" && i.category !== "Cookies").map((item) => (
-                  <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />
-                ))}
-
-                {/* Cookies Dropdown Card — shows in All tab only */}
-                {activeCategory === "All" && filtered.some(i => i.category === "Cookies") && (
-                  <div className="menu-card">
-                    <div className="img-wrap">
-                      <img src="https://vqhhwukvheezunccehzm.supabase.co/storage/v1/object/public/Menu%20Items/20260501_083105(2).jpg" alt="Almond Lavender Cookies" className="food-img" onError={(e) => { e.target.src = FALLBACK; }} />
-                      <div className="cat-badge">COOKIES</div>
-                    </div>
-                    <div style={{ padding: "20px 20px 18px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
-                        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 600, lineHeight: 1.2, flex: 1, paddingRight: "12px", color: "#1A1208" }}>Almond Lavender Cookies</h2>
-                      </div>
-                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.65, color: "#6B5E4E", marginBottom: "14px" }}>Organic & Gluten-Free. Made with love by Chef Heather Janey.</p>
-                      <div style={{ marginBottom: "14px" }}>
-                        <select value={selectedCookie} onChange={(e) => setSelectedCookie(e.target.value)}
-                          style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #D4C9B8", borderRadius: "10px", fontFamily: "'DM Sans', sans-serif", fontSize: "13px", background: "#FEFAF4", outline: "none", cursor: "pointer" }}>
-                          <option value="" disabled>Choose a pack size...</option>
-                          {filtered.filter(i => i.category === "Cookies").map((item) => (
-                            <option key={item.id} value={item.id}>{item.name.replace("Almond Lavender Cookies - ", "")} — ${item.price}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #EEE8DF", paddingTop: "14px" }}>
-                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C" }}>💡 Bigger packs = better savings!</div>
-                        <button disabled={!selectedCookie} className="add-btn"
-                          style={{ opacity: selectedCookie ? 1 : 0.4, cursor: selectedCookie ? "pointer" : "not-allowed" }}
-                          onClick={() => { const s = filtered.find(i => i.id === selectedCookie); if (s) { addToCart(s); setSelectedCookie(""); } }}>
-                          + Add to Order
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </>
