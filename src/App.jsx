@@ -927,6 +927,14 @@ export default function MenuApp() {
                         const catEmoji = {"Catering":"🎉","Private Dinners":"🍷"}[cat] || "🍽️";
                         return [
                           makeBanner(`banner-${cat}`, catEmoji, cat),
+                          cat === "Catering" ? (
+                            <div key="catering-note" style={{ gridColumn: "1 / -1", background: "#FBF5DC", border: "1px solid #EDD87A", borderRadius: "12px", padding: "14px 20px", display: "flex", alignItems: "center", gap: "12px" }}>
+                              <span style={{ fontSize: "18px", flexShrink: 0 }}>💡</span>
+                              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#6B5E4E", lineHeight: 1.6, margin: 0 }}>
+                                <strong style={{ color: "#1A1208" }}>Did you know?</strong> All meal prep options are also available for catering. Contact Heather for custom pricing and quantities!
+                              </p>
+                            </div>
+                          ) : null,
                           ...withPhoto.map(item => <MealCard key={item.id} item={item} onAdd={() => addToCart(item)} />),
                           noPhoto.length > 0 ? <div key={`text-${cat}`} style={{ gridColumn: "1 / -1", background: "#fff", borderRadius: "16px", border: "1px solid #EEE8DF", padding: "8px 24px 0" }}>{noPhoto.map(item => <TextMenuItem key={item.id} item={item} onAdd={() => addToCart(item)} />)}</div> : null,
                         ].filter(Boolean);
