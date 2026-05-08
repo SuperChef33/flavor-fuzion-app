@@ -928,10 +928,11 @@ export default function MenuApp() {
                         return [
                           makeBanner(`banner-${cat}`, catEmoji, cat),
                           cat === "Catering" ? (
-                            <div key="catering-note" style={{ gridColumn: "1 / -1", background: "#FBF5DC", border: "1px solid #EDD87A", borderRadius: "12px", padding: "14px 20px", display: "flex", alignItems: "center", gap: "12px" }}>
-                              <span style={{ fontSize: "18px", flexShrink: 0 }}>💡</span>
-                              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "#6B5E4E", lineHeight: 1.6, margin: 0 }}>
-                                <strong style={{ color: "#1A1208" }}>Did you know?</strong> All meal prep options are also available for catering. Contact Heather for custom pricing and quantities!
+                            <div key="catering-note" style={{ gridColumn: "1 / -1", background: "linear-gradient(135deg, #C9A227 0%, #E8C547 100%)", borderRadius: "12px", padding: "16px 24px", display: "flex", alignItems: "center", gap: "14px", position: "relative", overflow: "hidden" }}>
+                              <div style={{ position: "absolute", top: "-20px", right: "-20px", width: "80px", height: "80px", borderRadius: "50%", background: "rgba(255,255,255,0.15)" }} />
+                              <span style={{ fontSize: "20px", flexShrink: 0, position: "relative", zIndex: 1 }}>✨</span>
+                              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "16px", fontStyle: "italic", color: "#1A1208", lineHeight: 1.6, margin: 0, position: "relative", zIndex: 1, fontWeight: 600 }}>
+                                All meal prep options are also available for catering — contact Heather for custom pricing and quantities!
                               </p>
                             </div>
                           ) : null,
