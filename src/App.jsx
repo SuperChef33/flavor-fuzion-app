@@ -819,7 +819,7 @@ export default function MenuApp() {
 
       {/* 🧊 Fresh Never Frozen Banner */}
       {(activeCategory === "All" || activeCategory === "Meal Prep") && (
-        <div style={{ background: "linear-gradient(135deg, #1A1208 0%, #3D2B1A 100%)", margin: "0 32px 32px", borderRadius: "16px", padding: "18px 28px", display: "flex", alignItems: "center", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
+        <div style={{ background: "linear-gradient(135deg, #0F1A0F 0%, #4A1B6B 100%)", margin: "0 32px 32px", borderRadius: "16px", padding: "18px 28px", display: "flex", alignItems: "center", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
           <span style={{ fontSize: "28px" }}>🧊</span>
           <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontStyle: "italic", color: "#FEFAF4", textAlign: "center" }}>Frozen is for ice cream. Not your meals.</div>
           <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#B5A48C", letterSpacing: "0.1em", textTransform: "uppercase" }}>— Always Fresh</span>
